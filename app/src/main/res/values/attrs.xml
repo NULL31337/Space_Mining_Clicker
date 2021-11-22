@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SpriteView">
+        <attr name="SpriteWidth" format="dimension" />
+        <attr name="SpriteHeight" format="dimension" />
+        <attr name="CountInLine" format="integer" />
+        <attr name="CountLine" format="integer" />
+
+    </declare-styleable>
+</resources>
