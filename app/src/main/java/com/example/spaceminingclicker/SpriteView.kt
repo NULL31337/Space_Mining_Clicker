@@ -19,11 +19,11 @@ class SpriteView @JvmOverloads constructor(
     private var countLine: Int
     private var src_resource: Int
     private lateinit var bitmap: Bitmap
-    private lateinit var paint: Paint
-    private var fakeCounter = 0
+    private var paint = Paint()
     private var maxSize: Int = -1
     private var widthSpec: Int = -1
     private var heightSpec: Int = -1
+    private val options = BitmapFactory.Options()
 
     init {
         val a: TypedArray = context.obtainStyledAttributes(
@@ -47,9 +47,7 @@ class SpriteView @JvmOverloads constructor(
     }
 
     private fun setup() {
-        paint = Paint()
         paint.isFilterBitmap = false
-        val options = BitmapFactory.Options()
         options.inScaled = false
         bitmap = BitmapFactory.decodeResource(resources, src_resource, options)
     }
@@ -85,5 +83,8 @@ class SpriteView @JvmOverloads constructor(
         update()
         invalidate()
     }
-
-}
+    override fun setImageResource(i: Int) {
+        src_resource = i
+        bitmap = BitmapFactory.decodeResource(resources, src_resource, options)
+    }
+}   

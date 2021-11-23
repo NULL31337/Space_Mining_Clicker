@@ -13,6 +13,7 @@ class Shop : AppCompatActivity() {
         moneyView = findViewById(R.id.money)
         moneyView.text = MainActivity.money.toString()
     }
+
     fun shopButtons(view: View){
 
     }

@@ -12,18 +12,29 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.graphics.Bitmap
 import android.util.DisplayMetrics
+import java.math.BigInteger
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private lateinit var data: SharedPreferences
         var money = 0
     }
-    lateinit var moneyView: TextView
+
+    private lateinit var moneyView: TextView
+    lateinit var cpsView: TextView
     lateinit var mainView: SpriteView
     lateinit var animation: Animation
     lateinit var backgroundAnimation: Animation
     lateinit var background: ImageView
     lateinit var bitmap: Bitmap
+
+    var upgradesCostStartLevel = hashMapOf<Pair<Int, Int>, Pair<Int, Int>>()
+    var upgrades = hashMapOf<String, Int>()
+    lateinit var afk: BigInteger
+    private val timer = Timer()
+    var clicks = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +47,17 @@ class MainActivity : AppCompatActivity() {
         mainView = findViewById(R.id.mainPicture)
         animation = AnimationUtils.loadAnimation(this, R.anim.animation)
         background = findViewById(R.id.backgroundView)
+        cpsView = findViewById(R.id.cps)
+        createUpgrades()
+        var tmp = 1
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                cpsView.text = "$clicks cps"
+                clicks = 0
+                mainView.setImageResource(getStringIdentifier("planet10$tmp"))
+                tmp = (++tmp) % 10
+            }
+        }, 0, 1000)
 
         var display = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(display)
@@ -43,14 +65,28 @@ class MainActivity : AppCompatActivity() {
         background.layoutParams.height = background.layoutParams.width * 4
         backgroundAnimation = AnimationUtils.loadAnimation(this, R.anim.up)
         background.startAnimation(backgroundAnimation)
-        moneyView.text=money.toString()
+        moneyView.text = (money / 10).toString()
+    }
+
+    fun getStringIdentifier(name: String?): Int {
+        return resources.getIdentifier(name, "drawable", packageName)
     }
 
 
+    private fun createUpgrades() {
+        val scanner = Scanner(assets.open("Upgrades"))
+        while (scanner.hasNextLine()) {
+            val a = scanner.nextInt()
+            val b = scanner.nextInt()
+            val c = scanner.nextInt()
+            upgradesCostStartLevel[(a / 10) to (a % 10)] = b to c
+        }
+    }
 
     fun buttonClicked(view: View) {
-        money++
-        moneyView.text=money.toString()
+        clicks++
+        money += 10
+        moneyView.text = (money / 10).toString()
         mainView.startAnimation(animation)
     }
 
@@ -73,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         money = data.getInt("money", 0)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         val edit = data.edit()
