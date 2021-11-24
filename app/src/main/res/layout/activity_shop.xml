@@ -30,13 +30,14 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton0"
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -117,13 +118,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton1">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -204,13 +205,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton2">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -291,13 +292,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton3">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -378,13 +379,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton4">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -465,13 +466,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton5">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -552,13 +553,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton6">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -639,13 +640,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton7">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -726,13 +727,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton8">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -813,13 +814,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:onClick="shopButtons">
+                android:onClick="shopButtons"
+                android:id="@+id/upgradeButton9">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/button"
-                    android:onClick="shopButtons"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,3:1"
                     app:layout_constraintHorizontal_bias="0.0"
