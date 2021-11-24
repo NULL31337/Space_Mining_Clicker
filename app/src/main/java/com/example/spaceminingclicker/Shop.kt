@@ -1,6 +1,7 @@
 package com.example.spaceminingclicker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 
@@ -15,6 +16,6 @@ class Shop : AppCompatActivity() {
     }
 
     fun shopButtons(view: View){
-
+        view.startAnimation(MainActivity.animation)
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.graphics.Bitmap
 import android.util.DisplayMetrics
+import android.util.Log
 import java.math.BigInteger
 import java.util.*
 
@@ -19,18 +20,18 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private lateinit var data: SharedPreferences
         var money = 0
+        private lateinit var moneyView: TextView
+        lateinit var cpsView: TextView
+        lateinit var mainView: SpriteView
+        lateinit var animation: Animation
+        lateinit var backgroundAnimation: Animation
+        lateinit var background: ImageView
     }
 
-    private lateinit var moneyView: TextView
-    lateinit var cpsView: TextView
-    lateinit var mainView: SpriteView
-    lateinit var animation: Animation
-    lateinit var backgroundAnimation: Animation
-    lateinit var background: ImageView
-    lateinit var bitmap: Bitmap
 
     var upgradesCostStartLevel = hashMapOf<Pair<Int, Int>, Pair<Int, Int>>()
     var upgrades = hashMapOf<String, Int>()
+
     lateinit var afk: BigInteger
     private val timer = Timer()
     var clicks = 0
@@ -89,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         moneyView.text = (money / 10).toString()
         mainView.startAnimation(animation)
     }
+
+
 
     fun buttonShop(view: View) {
         val shopIntent = Intent(this, Shop::class.java)
