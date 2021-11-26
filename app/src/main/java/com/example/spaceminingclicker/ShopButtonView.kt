@@ -35,7 +35,10 @@ class ShopButtonView @JvmOverloads constructor(
 
     fun setButton(button: ShopButton) {
         costTextView.text = button.cost.toMyString()
-        giveTextView.text = button.give.toMyString()
+        when(button.type) {
+            typeOfButton.AFK -> giveTextView.text = button.give.toMyString()
+            typeOfButton.CLICK -> giveTextView.text = button.give.toString()
+        }
         lvlTextView.text = button.currentLvl.toString()
     }
 }

@@ -3,6 +3,7 @@ package com.example.spaceminingclicker
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,19 +13,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.util.DisplayMetrics
 import android.util.Log
+import com.example.spaceminingclicker.ShopButton.Companion.makeNthUpgrade
 import java.math.BigInteger
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        fun makeNthClick(n: Int): BigInteger {
-            var ans = BigInteger("10000")
-            repeat(n) {
-                ans = (ans * 250.toBigInteger()) / 100.toBigInteger()
-            }
-            return ans
-        }
-
         fun getStringIdentifier(context: Context, type: String, name: String?): Int {
             return context.resources.getIdentifier(name, type, context.packageName)
         }
@@ -33,11 +27,11 @@ class MainActivity : AppCompatActivity() {
     //Data
     private lateinit var data: SharedPreferences
     private lateinit var money: BigInteger
-    private var clickLvl: Int = -1
     private var clickCost = BigInteger("10")
     private var afkCost = BigInteger("0")
     private var upgradesLvl = mutableListOf<Int>()
     private var clicksCount = 0
+    private var multiply = 1
 
     private val timer = Timer()
 
@@ -56,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
         Log.d("build", "readInfo")
-        data = getSharedPreferences("info3", Context.MODE_PRIVATE)
+        data = getSharedPreferences("infoKekw", Context.MODE_PRIVATE)
         planetSpriteView = findViewById(R.id.mainPicture)
         restoreData(data)
         Log.d("build", "setViews")
@@ -85,72 +79,69 @@ class MainActivity : AppCompatActivity() {
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 cpsTextView.text =
-                    "${(clicksCount.toBigInteger() * clickCost + afkCost).toMyString()} cps"
+                    "${(clicksCount.toBigInteger() * clickCost * multiply.toBigInteger() + afkCost).toMyString()} cps"
                 money += afkCost
                 moneyTextView.text = money.toMyString()
+                if (clicksCount / 5 + 1 > multiply) {
+                    multiply++
+                } else {
+                    if (multiply != 1) {
+                        multiply--
+                    }
+                }
                 clicksCount = 0
+                when (multiply) {
+                    1 -> moneyTextView.setTextColor(Color.parseColor("#FF00FF"))
+                    2 -> moneyTextView.setTextColor(Color.parseColor("#FFFFFF"))
+                    3 -> moneyTextView.setTextColor(Color.parseColor("#000000"))
+                    4 -> moneyTextView.setTextColor(Color.parseColor("#123456"))
+                    5 -> moneyTextView.setTextColor(Color.parseColor("#FF22FF"))
+                }
             }
         }, 0, 1000)
     }
 
     fun onClickPlanetView(view: View) {
         clicksCount++
-        money += clickCost
+        money += clickCost * multiply.toBigInteger()
         moneyTextView.text = money.toMyString()
         planetSpriteView.startAnimation(clickAnimation)
     }
 
     fun onClickShopView(view: View) {
+        saveData(data.edit())
         val shopIntent = Intent(this, Shop::class.java)
-        shopIntent.putExtra("upgradesLvl", upgradesLvl.toIntArray())
-        shopIntent.putExtra("money", money.toString())
-        shopIntent.putExtra("afkCost", afkCost.toString())
-        shopIntent.putExtra("clickLvl", clickLvl)
         startActivity(shopIntent)
     }
 
 
     fun saveData(edit: SharedPreferences.Editor) {
-        for (i in 0..9) {
+        for (i in 0..10) {
             edit.putInt("010$i", upgradesLvl[i]).apply()
         }
         edit.putString("money", money.toString()).apply()
-        edit.putInt("clickLvl", clickLvl)
+        edit.putString("afkGIve", afkCost.toString())
+        edit.commit()
     }
 
     fun restoreData(data: SharedPreferences) {
-        if (intent.getStringExtra("money") == null) {
-            for (i in 0..9) {
-                upgradesLvl.add(data.getInt("010$i", 0))
-            }
-            money = BigInteger(data.getString("money", "0"))
-            clickLvl = data.getInt("clickLvl", 0)
-            clickCost = makeNthClick(clickLvl)
-            repeat(clickLvl) {
-                clickCost *= 2.toBigInteger()
-            }
-            planetSpriteView.setImageResource(
-                getStringIdentifier(
-                    baseContext,
-                    "drawable",
-                    "planet10$clickLvl"
-                )
-            )
-            afkCost = BigInteger(data.getString("afkCost", "0"))
-        } else {
-            upgradesLvl = intent.getIntArrayExtra("upgradesLvl")!!.toMutableList()
-            afkCost = BigInteger(intent.getStringExtra("afkCost"))
-            money = BigInteger(intent.getStringExtra("money"))
-            clickLvl = intent.getIntExtra("clickLvl", 0)
-
-            planetSpriteView.setImageResource(
-                getStringIdentifier(
-                    baseContext,
-                    "drawable",
-                    "planet10$clickLvl"
-                )
-            )
+        upgradesLvl = mutableListOf()
+        for (i in 0..10) {
+            upgradesLvl.add(data.getInt("010$i", 0))
         }
+        money = BigInteger(data.getString("money", "0"))
+        clickCost = BigInteger("10")
+        repeat(upgradesLvl[10]) {
+            clickCost *= 2.toBigInteger()
+        }
+        planetSpriteView.setImageResource(
+            getStringIdentifier(
+                baseContext,
+                "drawable",
+                "planet10${upgradesLvl[10]}"
+            )
+        )
+        afkCost = BigInteger(data.getString("afkCost", "0"))
     }
 
     override fun onPause() {

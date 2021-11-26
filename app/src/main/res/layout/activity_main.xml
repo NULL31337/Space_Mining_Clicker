@@ -240,10 +240,9 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_weight="1">
 
             <com.example.spaceminingclicker.SpriteView
@@ -252,13 +251,17 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/vosem"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="50dp"
                 app:CountInLine="120"
                 app:CountLine="8"
                 app:SpriteHeight="100px"
                 app:SpriteWidth="100px"
                 />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 </FrameLayout>

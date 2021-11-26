@@ -1,6 +1,8 @@
 package com.example.spaceminingclicker
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +12,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import com.example.spaceminingclicker.MainActivity.Companion.getStringIdentifier
-import com.example.spaceminingclicker.MainActivity.Companion.makeNthClick
 import java.lang.NullPointerException
 import java.math.BigInteger
 import java.util.*
@@ -22,18 +23,20 @@ class Shop : AppCompatActivity() {
     private var buttons = mutableListOf<ShopButton>()
     private var buttonsView = mutableListOf<ShopButtonView>()
     private lateinit var afkCost: BigInteger
-    private lateinit var upgradesLvl: MutableList<Int>
+    private var upgradesLvl = mutableListOf<Int>()
     private lateinit var money: BigInteger
-    private lateinit var clickCost: BigInteger
     private var clickLvl: Int = -1
 
+    private lateinit var data: SharedPreferences
     private lateinit var clickAnimation: Animation
 
     fun readUpgrades() {
         val scanner = Scanner(assets.open("Upgrades"))
         for (i in 0..9) {
-            buttons.add(ShopButton(scanner.nextInt(), scanner.nextInt(), BigInteger(scanner.next()), BigInteger(scanner.next()), upgradesLvl[i]))
+            buttons.add(ShopButton(scanner.nextInt(), scanner.nextInt(), BigInteger(scanner.next()), BigInteger(scanner.next()), upgradesLvl[i], typeOfButton.AFK))
         }
+        buttons.add(ShopButton(scanner.nextInt(), scanner.nextInt(), BigInteger(scanner.next()), BigInteger(scanner.next()), upgradesLvl[10], typeOfButton.CLICK))
+
     }
 
     fun evaluateAfk() {
@@ -47,45 +50,35 @@ class Shop : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
         supportActionBar?.hide()
-        val arguments = intent.extras
-        upgradesLvl = arguments?.getIntArray("upgradesLvl")?.toMutableList() ?: throw NullPointerException("Bad Bundle")
-        money = BigInteger(arguments.getString("money", "0"))
-        clickLvl = arguments.getInt("clickLvl")
+        data = getSharedPreferences("infoKekw", Context.MODE_PRIVATE)
+        restoreData(data)
         moneyTextView = findViewById(R.id.money)
         moneyTextView.text = money.toMyString()
         clickAnimation = AnimationUtils.loadAnimation(this, R.anim.animation)
-        clickCost = makeNthClick(clickLvl)
 
         readUpgrades()
         fillButtonsArrayAndText()
         evaluateAfk()
 
-        var tmp = 1
-        repeat(clickLvl + 1) {
-            tmp *= 2
-        }
     }
 
-    fun OnClickBackArrow(view: View) {
-        val data2 = Intent(this, MainActivity::class.java)
-        data2.putExtra("upgradesLvl", upgradesLvl.toIntArray())
-        data2.putExtra("money", money.toString())
-        data2.putExtra("afkCost", afkCost.toString())
-        data2.putExtra("clickLvl", clickLvl)
-        startActivity(data2)
-    }
+    fun OnClickBackArrow(view: View) = onBackPressed()
 
+    override fun onBackPressed() {
+        saveData(data.edit())
+        super.onBackPressed()
+    }
     override fun onDestroy() {
+        saveData(data.edit())
         super.onDestroy()
-        OnClickBackArrow(moneyTextView)
     }
     override fun onPause() {
+        saveData(data.edit())
         super.onPause()
-        OnClickBackArrow(moneyTextView)
     }
 
     fun fillButtonsArrayAndText() {
-        for (i in 0..9) {
+        for (i in 0..10) {
             buttonsView.add(findViewById( resources.getIdentifier("button$i", "id", packageName)))
             getIdByView[buttonsView[i].clickableLayout] = i
             buttonsView[i].setButton(buttons[i])
@@ -105,5 +98,22 @@ class Shop : AppCompatActivity() {
             moneyTextView.text = money.toMyString()
             buttonsView[i].setButton(buttons[i])
         }
+    }
+
+
+    fun saveData(edit: SharedPreferences.Editor) {
+        for (i in 0..10) {
+            edit.putInt("010$i", upgradesLvl[i]).apply()
+        }
+        edit.putString("money", money.toString()).apply()
+        edit.putString("afkCost", afkCost.toString())
+        edit.commit()
+    }
+
+    fun restoreData(data: SharedPreferences) {
+        for (i in 0..10) {
+            upgradesLvl.add(data.getInt("010$i", 0))
+        }
+        money = BigInteger(data.getString("money", "0"))
     }
 }
