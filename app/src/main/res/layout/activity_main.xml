@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/two_button"
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/three_button"
@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/eleven_button"
@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/twelve_button"
@@ -78,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/fiveteen_button"
@@ -101,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/sixteen_button"
@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
         </LinearLayout>
 
         <LinearLayout
@@ -124,7 +124,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/five_button"
@@ -132,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/six_button"
@@ -140,7 +140,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
         </LinearLayout>
 
         <LinearLayout
@@ -155,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/eight_button"
@@ -163,7 +163,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
 
             <Button
                 android:id="@+id/nine_button"
@@ -171,7 +171,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#00000000"
-                android:onClick="buttonClicked" />
+                android:onClick="onClickPlanetView" />
         </LinearLayout>
     </LinearLayout>
 
@@ -228,7 +228,7 @@
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/shop"
                     android:gravity="center"
-                    android:onClick="buttonShop"
+                    android:onClick="onClickShopView"
                     android:scaleType="center"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintRight_toRightOf="parent"

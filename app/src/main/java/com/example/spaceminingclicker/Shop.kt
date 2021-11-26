@@ -1,107 +1,109 @@
 package com.example.spaceminingclicker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.TextView
-import com.example.spaceminingclicker.MainActivity.Companion.afkCps
-import com.example.spaceminingclicker.MainActivity.Companion.calculateCps
-import com.example.spaceminingclicker.MainActivity.Companion.makeNthUpgrade
-import com.example.spaceminingclicker.MainActivity.Companion.money
-import com.example.spaceminingclicker.MainActivity.Companion.moneyToString
-import com.example.spaceminingclicker.MainActivity.Companion.upgrades
-import com.example.spaceminingclicker.MainActivity.Companion.upgradesCostStartLevel
+import com.example.spaceminingclicker.MainActivity.Companion.getStringIdentifier
+import com.example.spaceminingclicker.MainActivity.Companion.makeNthClick
+import java.lang.NullPointerException
 import java.math.BigInteger
 import java.util.*
+import kotlin.collections.HashMap
 
 class Shop : AppCompatActivity() {
-    lateinit var moneyView: TextView
-    var buttonsCost = mutableListOf<TextView>()
-    var buttonsLVL = mutableListOf<TextView>()
-    var buttonsGive = mutableListOf<TextView>()
-    var buttons = hashMapOf<View, Int>()
+    private lateinit var moneyTextView: TextView
+    private var getIdByView = HashMap<View, Int>()
+    private var buttons = mutableListOf<ShopButton>()
+    private var buttonsView = mutableListOf<ShopButtonView>()
+    private lateinit var afkCost: BigInteger
+    private lateinit var upgradesLvl: MutableList<Int>
+    private lateinit var money: BigInteger
+    private lateinit var clickCost: BigInteger
+    private var clickLvl: Int = -1
+
+    private lateinit var clickAnimation: Animation
+
+    fun readUpgrades() {
+        val scanner = Scanner(assets.open("Upgrades"))
+        for (i in 0..9) {
+            buttons.add(ShopButton(scanner.nextInt(), scanner.nextInt(), BigInteger(scanner.next()), BigInteger(scanner.next()), upgradesLvl[i]))
+        }
+    }
+
+    fun evaluateAfk() {
+        afkCost = BigInteger("0")
+        for (i in 0..9) {
+            afkCost += upgradesLvl[i].toBigInteger() * buttons[i].give
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        MainActivity.restoreData(MainActivity.data)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
-        createUpgrades()
-        moneyView = findViewById(R.id.money)
-        moneyView.text = moneyToString(money)
+        supportActionBar?.hide()
+        val arguments = intent.extras
+        upgradesLvl = arguments?.getIntArray("upgradesLvl")?.toMutableList() ?: throw NullPointerException("Bad Bundle")
+        money = BigInteger(arguments.getString("money", "0"))
+        clickLvl = arguments.getInt("clickLvl")
+        moneyTextView = findViewById(R.id.money)
+        moneyTextView.text = money.toMyString()
+        clickAnimation = AnimationUtils.loadAnimation(this, R.anim.animation)
+        clickCost = makeNthClick(clickLvl)
+
+        readUpgrades()
+        fillButtonsArrayAndText()
+        evaluateAfk()
+
+        var tmp = 1
+        repeat(clickLvl + 1) {
+            tmp *= 2
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        MainActivity.restoreData(MainActivity.data)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        MainActivity.saveData(MainActivity.data.edit())
+    fun OnClickBackArrow(view: View) {
+        val data2 = Intent(this, MainActivity::class.java)
+        data2.putExtra("upgradesLvl", upgradesLvl.toIntArray())
+        data2.putExtra("money", money.toString())
+        data2.putExtra("afkCost", afkCost.toString())
+        data2.putExtra("clickLvl", clickLvl)
+        startActivity(data2)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        MainActivity.saveData(MainActivity.data.edit())
+        OnClickBackArrow(moneyTextView)
+    }
+    override fun onPause() {
+        super.onPause()
+        OnClickBackArrow(moneyTextView)
     }
 
-    fun createUpgrades() {
+    fun fillButtonsArrayAndText() {
         for (i in 0..9) {
-            buttonsGive.add(
-                findViewById(
-                    resources.getIdentifier(
-                        "shopButton${i}Give",
-                        "id",
-                        packageName
-                    )
-                )
-            )
-            buttonsCost.add(
-                findViewById(
-                    resources.getIdentifier(
-                        "shopButton${i}Cost",
-                        "id",
-                        packageName
-                    )
-                )
-            )
-            buttonsLVL.add(
-                findViewById(
-                    resources.getIdentifier(
-                        "shopButton${i}LVL",
-                        "id",
-                        packageName
-                    )
-                )
-            )
-            Log.d("SUKAA", "createUpgrades: $i")
-            buttons[findViewById(
-                resources.getIdentifier(
-                    "upgradeButton${i}",
-                    "id",
-                    packageName
-                )
-            )] = i
-            Log.d("SUKAA", "createUpgrades: $i")
-            buttonsCost[i].text =
-                moneyToString(makeNthUpgrade(upgrades[i], upgradesCostStartLevel[1 to i]!!.second))
-            buttonsGive[i].text = moneyToString(upgradesCostStartLevel[1 to i]!!.first)
-            buttonsLVL[i].text = upgrades[i].toBigInteger().toString()
+            buttonsView.add(findViewById( resources.getIdentifier("button$i", "id", packageName)))
+            getIdByView[buttonsView[i].clickableLayout] = i
+            buttonsView[i].setButton(buttons[i])
+            buttons[i].update()
         }
     }
 
     fun shopButtons(view: View) {
-        view.startAnimation(MainActivity.animation)
-        val i = buttons[view] ?: 0
-        val tmp = makeNthUpgrade(upgrades[i], upgradesCostStartLevel[1 to i]!!.second)
-        if (money > tmp) {
-            money -= tmp
-            upgrades[i]++
-            calculateCps()
-            moneyView.text = moneyToString(money)
-            buttonsCost[i].text = moneyToString(makeNthUpgrade(1, tmp))
-            buttonsLVL[i].text = upgrades[i].toBigInteger().toString()
+        view.startAnimation(clickAnimation)
+        val i = getIdByView[view] ?: 0
+        if (money > buttons[i].cost) {
+            money -= buttons[i].cost
+            upgradesLvl[i]++
+            buttons[i].currentLvl++
+            evaluateAfk()
+            buttons[i].update()
+            moneyTextView.text = money.toMyString()
+            buttonsView[i].setButton(buttons[i])
         }
     }
 }

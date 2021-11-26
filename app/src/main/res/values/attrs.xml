@@ -7,4 +7,5 @@
         <attr name="CountLine" format="integer" />
 
     </declare-styleable>
+
 </resources>
