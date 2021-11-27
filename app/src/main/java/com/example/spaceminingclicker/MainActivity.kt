@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                 cpsTextView.text =
                     "${(clicksCount.toBigInteger() * clickCost * multiply.toBigInteger() + afkCost).toMyString()} cps"
                 money += afkCost
+
                 moneyTextView.text = money.toMyString()
                 if (clicksCount / 5 + 1 > multiply) {
                     multiply++
@@ -220,7 +221,7 @@ fun BigInteger.toMyString() = when {
         this.condition("10000", "10000000", "k") ?: this.condition(
             "10000000",
             "10000000000",
-            "kk"
+            "KK"
         ) ?: "KEKW"
     }
 }
