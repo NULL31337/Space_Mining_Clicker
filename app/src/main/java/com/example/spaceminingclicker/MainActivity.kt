@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var clickAnimation: Animation
     private lateinit var backgroundAnimation: Animation
     private lateinit var backgroundImageView: ImageView
+    private lateinit var spaceShipCircle: CircularView
+    private lateinit var multiplyTextView: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         data = getSharedPreferences("infoKekw", Context.MODE_PRIVATE)
         planetSpriteView = findViewById(R.id.mainPicture)
         restoreData(data)
-        Log.d("build", "setViews")
         setViews()
+        Log.d("build", "setViews")
         everySecond()
     }
 
@@ -64,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         clickAnimation = AnimationUtils.loadAnimation(this, R.anim.animation)
         backgroundImageView = findViewById(R.id.backgroundView)
         cpsTextView = findViewById(R.id.cps)
+        spaceShipCircle = findViewById(R.id.circle)
+        multiplyTextView = findViewById(R.id.multiply)
 
         moneyTextView.text = money.toMyString()
         Log.d("build", "set background")
@@ -90,14 +94,9 @@ class MainActivity : AppCompatActivity() {
                         multiply--
                     }
                 }
+                multiplyTextView.text = "x$multiply"
                 clicksCount = 0
-                when (multiply) {
-                    1 -> moneyTextView.setTextColor(Color.parseColor("#FF00FF"))
-                    2 -> moneyTextView.setTextColor(Color.parseColor("#FFFFFF"))
-                    3 -> moneyTextView.setTextColor(Color.parseColor("#000000"))
-                    4 -> moneyTextView.setTextColor(Color.parseColor("#123456"))
-                    5 -> moneyTextView.setTextColor(Color.parseColor("#FF22FF"))
-                }
+                spaceShipCircle.setSpeed(multiply)
             }
         }, 0, 1000)
     }
@@ -111,7 +110,17 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickShopView(view: View) {
         saveData(data.edit())
-        val shopIntent = Intent(this, Shop::class.java)
+        val shopIntent: Intent = when {
+            view == findViewById(R.id.shopShar) -> Intent(this, Shop::class.java)
+            view == findViewById(R.id.shopBlackMarket) -> Intent(this, BlackMarket::class.java)
+            else -> Intent(this, BlackMarket::class.java)
+        }
+            startActivity(shopIntent)
+    }
+
+    fun onClickBlackMarket(view: View) {
+        saveData(data.edit())
+        val shopIntent = Intent(this, BlackMarket::class.java)
         startActivity(shopIntent)
     }
 
@@ -135,6 +144,9 @@ class MainActivity : AppCompatActivity() {
         repeat(upgradesLvl[10]) {
             clickCost *= 2.toBigInteger()
         }
+
+        spaceShipCircle = findViewById(R.id.circle)
+        spaceShipCircle.setSpaceShips(upgradesLvl)
         planetSpriteView.setImageResource(
             getStringIdentifier(
                 baseContext,

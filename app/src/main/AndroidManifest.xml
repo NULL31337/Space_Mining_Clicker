@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpaceMiningClicker">
         <activity
+            android:name=".BlackMarket"
+            android:exported="false" />
+        <activity
             android:name=".Shop"
             android:exported="false" />
         <activity

@@ -89,14 +89,16 @@ class Shop : AppCompatActivity() {
     fun shopButtons(view: View) {
         view.startAnimation(clickAnimation)
         val i = getIdByView[view] ?: 0
-        if (money > buttons[i].cost) {
-            money -= buttons[i].cost
-            upgradesLvl[i]++
-            buttons[i].currentLvl++
-            evaluateAfk()
-            buttons[i].update()
-            moneyTextView.text = money.toMyString()
-            buttonsView[i].setButton(buttons[i])
+        if (i == 0 || upgradesLvl[i - 1] > upgradesLvl[i]) {
+            if (money > buttons[i].cost) {
+                money -= buttons[i].cost
+                upgradesLvl[i]++
+                buttons[i].currentLvl++
+                evaluateAfk()
+                buttons[i].update()
+                moneyTextView.text = money.toMyString()
+                buttonsView[i].setButton(buttons[i])
+            }
         }
     }
 
